@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/members")
+      .then((res) => res.json())
+      .then((data) => {
+        setMembers(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching members:", err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Fabman Members</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {members.map((member) => (
+            <li key={member.id}>
+              {member.firstName} {member.lastName} ({member.email})
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
