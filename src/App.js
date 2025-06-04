@@ -6,7 +6,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/members")
+    fetch("https://test-fabman-backend.onrender.com/api/members")
       .then((res) => res.json())
       .then((data) => {
         setMembers(data);
